@@ -42,7 +42,7 @@ export default async function getTitle(id) {
         month: null,
         year: null,
         releaseLocation: {
-          country: releaseDateMeta.country.text
+          country: releaseDateMeta.country.text,
           cca2: releaseDateMeta.country.id
         },
         originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
