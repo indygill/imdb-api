@@ -26,3 +26,5 @@ raw.get("/:id", async (c) => {
     });
   }
 });
+
+export default raw;
