@@ -46,7 +46,7 @@ search.get("/", async (c) => {
         titles.push({
           id: node.id,
           title: node.l,
-          year: node.y,
+          year: node.y ? node.y : "",
           type: node.qid,
           ...imageObj,
           api_path: `/title/${node.id}`,
