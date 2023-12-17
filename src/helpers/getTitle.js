@@ -3,6 +3,11 @@ import DomParser from "dom-parser";
 import seriesFetcher from "./seriesFetcher";
 
 export default async function getTitle(id) {
+
+  function isDefined(value) {
+    return typeof value !== 'undefined';
+  }
+  
   const parser = new DomParser();
   const html = await apiRequestRawHtml(`https://www.imdb.com/title/${id}`);
   const dom = parser.parseFromString(html);
