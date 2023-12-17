@@ -90,7 +90,7 @@ export default async function getTitle(id) {
       props.aboveTheFoldData.productionStatus.currentProductionStage.id ===
       "released",
     title: props.aboveTheFoldData.titleText.text,
-    image: props.aboveTheFoldData.primaryImage.url || "",
+    image: props.aboveTheFoldData.primaryImage ? props.aboveTheFoldData.primaryImage.url : "",
     images: props.mainColumnData.titleMainImages.edges
       .filter((e) => e.__typename === "ImageEdge")
       .map((e) => e.node.url || ""),
