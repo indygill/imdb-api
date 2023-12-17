@@ -51,6 +51,7 @@ export default async function getTitle(id) {
             cca2: e.id,
           })
         ),
+      }
     }
 
     return {
