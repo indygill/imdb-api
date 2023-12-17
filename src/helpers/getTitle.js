@@ -110,12 +110,12 @@ export default async function getTitle(id) {
     genre: props.aboveTheFoldData.genres.genres.map((e) => e.id),
     releaseDetailed: extractReleaseDate(props.aboveTheFoldData.releaseDate, props.mainColumnData),
     year: props.aboveTheFoldData.releaseDate ? props.aboveTheFoldData.releaseDate.year : "",
-    spokenLanguages: props.mainColumnData.spokenLanguages.spokenLanguages.map(
+    spokenLanguages:  props.mainColumnData.spokenLanguages ? props.mainColumnData.spokenLanguages.spokenLanguages.map(
       (e) => ({
         language: e.text,
         id: e.id,
       })
-    ),
+    ) : [],
     filmingLocations: props.mainColumnData.filmingLocations.edges.map(
       (e) => e.node.text
     ),
