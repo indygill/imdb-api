@@ -48,7 +48,7 @@ export default async function getTitle(id) {
         },
         originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
           (e) => ({
-            country: e.text,
+            country: e?.text ?? "",
             cca2: e.id,
           })
         ),
