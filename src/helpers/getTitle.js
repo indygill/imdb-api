@@ -34,6 +34,47 @@ export default async function getTitle(id) {
       : [];
   };
 
+  const extraceReleaseDate = (releaseDate, releaseDateMeta) => {
+    if(!releaseDate) {
+      return {
+        date: null,
+        day: null,
+        month: null,
+        year: null,
+        releaseLocation: {
+          country: releaseDateMeta.country.text
+          cca2: releaseDateMeta.country.id
+        },
+        originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
+          (e) => ({
+            country: e.text,
+            cca2: e.id,
+          })
+        ),
+    }
+
+    return {
+      date: new Date(
+        releaseDate.year,
+        releaseDate.month - 1,
+        releaseDate.day
+      ).toISOString(),
+      day: releaseDate.day,
+      month: releaseDate.month,
+      year: releaseDate.year,
+      releaseLocation: {
+        country: releaseDateMeta.country.text
+        cca2: releaseDateMeta.country.id
+      },
+      originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
+        (e) => ({
+          country: e.text,
+          cca2: e.id,
+        })
+      ),
+    }
+  }:
+
   return {
     id: id,
     review_api_path: `/reviews/${id}`,
@@ -65,39 +106,8 @@ export default async function getTitle(id) {
       nominations: props.mainColumnData.nominations?.total ?? 0,
     },
     genre: props.aboveTheFoldData.genres.genres.map((e) => e.id),
-    releaseDetailed: {
-      date: new Date(
-        isDefined(props.aboveTheFoldData.releaseDate.year)
-          ? props.aboveTheFoldData.releaseDate.year
-          : undefined,
-        props.aboveTheFoldData.releaseDate.month - 1,
-        props.aboveTheFoldData.releaseDate.day
-      ).toISOString(),
-      day: isDefined(props.aboveTheFoldData.releaseDate.day)
-        ? props.aboveTheFoldData.releaseDate.day
-        : undefined,
-      month: isDefined(props.aboveTheFoldData.releaseDate.month)
-        ? props.aboveTheFoldData.releaseDate.month
-        : undefined,
-      year: isDefined(props.aboveTheFoldData.releaseDate.year)
-        ? props.aboveTheFoldData.releaseDate.year
-        : undefined,
-      releaseLocation: {
-        country: isDefined(props.mainColumnData.releaseDate.country)
-          ? props.mainColumnData.releaseDate.country.text
-          : undefined,
-        cca2: isDefined(props.mainColumnData.releaseDate.country)
-          ? props.mainColumnData.releaseDate.country.id
-          : undefined,
-      },
-      originLocations: props.mainColumnData.countriesOfOrigin.countries.map(
-        (e) => ({
-          country: isDefined(e.text) ? e.text : undefined,
-          cca2: isDefined(e.id) ? e.id : undefined,
-        })
-      ),
-    },
-    year: props.aboveTheFoldData.releaseDate.year ? props.aboveTheFoldData.releaseDate.year : "",
+    releaseDetailed: extractReleaseDate(props.aboveTheFoldData.releaseDate, props.mainColumnData.releaseDate),
+    year: props.aboveTheFoldData.releaseDate ? props.aboveTheFoldData.releaseDate.year : "",
     spokenLanguages: props.mainColumnData.spokenLanguages.spokenLanguages.map(
       (e) => ({
         language: e.text,
