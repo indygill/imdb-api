@@ -108,7 +108,7 @@ export default async function getTitle(id) {
       nominations: props.mainColumnData.nominations?.total ?? 0,
     },
     genre: props.aboveTheFoldData.genres.genres.map((e) => e.id),
-    releaseDetailed: extractReleaseDate(props.aboveTheFoldData.releaseDate, props.mainColumnData.releaseDate),
+    releaseDetailed: extractReleaseDate(props.aboveTheFoldData.releaseDate, props.mainColumnData),
     year: props.aboveTheFoldData.releaseDate ? props.aboveTheFoldData.releaseDate.year : "",
     spokenLanguages: props.mainColumnData.spokenLanguages.spokenLanguages.map(
       (e) => ({
