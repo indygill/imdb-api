@@ -62,21 +62,33 @@ export default async function getTitle(id) {
     genre: props.aboveTheFoldData.genres.genres.map((e) => e.id),
     releaseDetailed: {
       date: new Date(
-        props.aboveTheFoldData.releaseDate.year,
+        isDefined(props.aboveTheFoldData.releaseDate.year)
+          ? props.aboveTheFoldData.releaseDate.year
+          : undefined,
         props.aboveTheFoldData.releaseDate.month - 1,
         props.aboveTheFoldData.releaseDate.day
       ).toISOString(),
-      day: props.aboveTheFoldData.releaseDate.day,
-      month: props.aboveTheFoldData.releaseDate.month,
-      year: props.aboveTheFoldData.releaseDate.year,
+      day: isDefined(props.aboveTheFoldData.releaseDate.day)
+        ? props.aboveTheFoldData.releaseDate.day
+        : undefined,
+      month: isDefined(props.aboveTheFoldData.releaseDate.month)
+        ? props.aboveTheFoldData.releaseDate.month
+        : undefined,
+      year: isDefined(props.aboveTheFoldData.releaseDate.year)
+        ? props.aboveTheFoldData.releaseDate.year
+        : undefined,
       releaseLocation: {
-        country: props.mainColumnData.releaseDate?.country?.text,
-        cca2: props.mainColumnData.releaseDate?.country?.id,
+        country: isDefined(props.mainColumnData.releaseDate.country)
+          ? props.mainColumnData.releaseDate.country.text
+          : undefined,
+        cca2: isDefined(props.mainColumnData.releaseDate.country)
+          ? props.mainColumnData.releaseDate.country.id
+          : undefined,
       },
       originLocations: props.mainColumnData.countriesOfOrigin.countries.map(
         (e) => ({
-          country: e.text,
-          cca2: e.id,
+          country: isDefined(e.text) ? e.text : undefined,
+          cca2: isDefined(e.id) ? e.id : undefined,
         })
       ),
     },
