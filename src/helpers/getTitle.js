@@ -80,7 +80,7 @@ export default async function getTitle(id) {
         })
       ),
     },
-    year: props.aboveTheFoldData.releaseDate.year,
+    year: props.aboveTheFoldData.releaseDate.year ? props.aboveTheFoldData.releaseDate.year : "",
     spokenLanguages: props.mainColumnData.spokenLanguages.spokenLanguages.map(
       (e) => ({
         language: e.text,
