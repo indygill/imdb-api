@@ -64,7 +64,7 @@ export default async function getTitle(id) {
       month: releaseDate.month,
       year: releaseDate.year,
       releaseLocation: {
-        country: releaseDateMeta.country.text
+        country: releaseDateMeta.country.text,
         cca2: releaseDateMeta.country.id
       },
       originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
@@ -74,7 +74,7 @@ export default async function getTitle(id) {
         })
       ),
     }
-  }:
+  };
 
   return {
     id: id,
