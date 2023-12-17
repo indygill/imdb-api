@@ -35,6 +35,7 @@ export default async function getTitle(id) {
   };
 
   const extractReleaseDate = (releaseDate, releaseDateMeta) => {
+   
     if(!releaseDate) {
       return {
         date: null,
@@ -42,8 +43,8 @@ export default async function getTitle(id) {
         month: null,
         year: null,
         releaseLocation: {
-          country: releaseDateMeta.country.text,
-          cca2: releaseDateMeta.country.id
+          country: releaseDate.country.text,
+          cca2: releaseDate.country.id
         },
         originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
           (e) => ({
@@ -64,8 +65,8 @@ export default async function getTitle(id) {
       month: releaseDate.month,
       year: releaseDate.year,
       releaseLocation: {
-        country: releaseDateMeta.country.text,
-        cca2: releaseDateMeta.country.id
+        country: releaseDate.country.text,
+        cca2: releaseDate.country.id
       },
       originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
         (e) => ({
