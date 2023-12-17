@@ -34,7 +34,7 @@ export default async function getTitle(id) {
       : [];
   };
 
-  const extraceReleaseDate = (releaseDate, releaseDateMeta) => {
+  const extractReleaseDate = (releaseDate, releaseDateMeta) => {
     if(!releaseDate) {
       return {
         date: null,
