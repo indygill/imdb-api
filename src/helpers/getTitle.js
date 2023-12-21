@@ -1,26 +1,17 @@
 import apiRequestRawHtml from "./apiRequestRawHtml";
 import DomParser from "dom-parser";
 import seriesFetcher from "./seriesFetcher";
-
 export default async function getTitle(id) {
-
-  function isDefined(value) {
-    return typeof value !== 'undefined';
-  }
-  
   const parser = new DomParser();
   const html = await apiRequestRawHtml(`https://www.imdb.com/title/${id}`);
   const dom = parser.parseFromString(html);
   const nextData = dom.getElementsByAttribute("id", "__NEXT_DATA__");
   const json = JSON.parse(nextData[0].textContent);
-
   const props = json.props.pageProps;
-
   const getCredits = (lookFor, v) => {
     const result = props.aboveTheFoldData.principalCredits.find(
       (e) => e?.category?.id === lookFor
     );
-
     return result
       ? result.credits.map((e) => {
           if (v === "2")
@@ -28,55 +19,10 @@ export default async function getTitle(id) {
               id: e.name.id,
               name: e.name.nameText.text,
             };
-
           return e.name.nameText.text;
         })
       : [];
   };
-
-  const extractReleaseDate = (releaseDate, releaseDateMeta) => {
-   
-    if(!releaseDate) {
-      return {
-        date: null,
-        day: null,
-        month: null,
-        year: null,
-        releaseLocation: {
-          country: null,
-          cca2: null
-        },
-        originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
-          (e) => ({
-            country: e?.text ?? "",
-            cca2: e.id,
-          })
-        ),
-      }
-    }
-
-    return {
-      date: new Date(
-        releaseDate.year,
-        releaseDate.month - 1,
-        releaseDate.day
-      ).toISOString(),
-      day: releaseDate.day,
-      month: releaseDate.month,
-      year: releaseDate.year,
-      releaseLocation: {
-        country: releaseDate.country.text,
-        cca2: releaseDate.country.id
-      },
-      originLocations: releaseDateMeta.countriesOfOrigin.countries.map(
-        (e) => ({
-          country: e?.text ?? "",
-          cca2: e.id,
-        })
-      ),
-    }
-  };
-
   return {
     id: id,
     review_api_path: `/reviews/${id}`,
@@ -90,11 +36,11 @@ export default async function getTitle(id) {
       props.aboveTheFoldData.productionStatus.currentProductionStage.id ===
       "released",
     title: props.aboveTheFoldData.titleText.text,
-    image: props.aboveTheFoldData.primaryImage ? props.aboveTheFoldData.primaryImage.url : "",
+    image: props.aboveTheFoldData.primaryImage.url,
     images: props.mainColumnData.titleMainImages.edges
       .filter((e) => e.__typename === "ImageEdge")
-      .map((e) => e.node.url || ""),
-    plot: props.aboveTheFoldData.plot ? props.aboveTheFoldData.plot.plotText.plainText : "",
+      .map((e) => e.node.url),
+    plot: props.aboveTheFoldData.plot.plotText.plainText,
     runtime:
       props.aboveTheFoldData.runtime?.displayableProperty?.value?.plainText ??
       "",
@@ -108,14 +54,33 @@ export default async function getTitle(id) {
       nominations: props.mainColumnData.nominations?.total ?? 0,
     },
     genre: props.aboveTheFoldData.genres.genres.map((e) => e.id),
-    releaseDetailed: extractReleaseDate(props.aboveTheFoldData.releaseDate, props.mainColumnData),
-    year: props.aboveTheFoldData.releaseDate ? props.aboveTheFoldData.releaseDate.year : "",
-    spokenLanguages:  props.mainColumnData.spokenLanguages ? props.mainColumnData.spokenLanguages.spokenLanguages.map(
+    releaseDetailed: {
+      date: new Date(
+        props.aboveTheFoldData.releaseDate.year,
+        props.aboveTheFoldData.releaseDate.month - 1,
+        props.aboveTheFoldData.releaseDate.day
+      ).toISOString(),
+      day: props.aboveTheFoldData.releaseDate.day,
+      month: props.aboveTheFoldData.releaseDate.month,
+      year: props.aboveTheFoldData.releaseDate.year,
+      releaseLocation: {
+        country: props.mainColumnData.releaseDate?.country?.text,
+        cca2: props.mainColumnData.releaseDate?.country?.id,
+      },
+      originLocations: props.mainColumnData.countriesOfOrigin.countries.map(
+        (e) => ({
+          country: e.text,
+          cca2: e.id,
+        })
+      ),
+    },
+    year: props.aboveTheFoldData.releaseDate.year,
+    spokenLanguages: props.mainColumnData.spokenLanguages.spokenLanguages.map(
       (e) => ({
         language: e.text,
         id: e.id,
       })
-    ) : [],
+    ),
     filmingLocations: props.mainColumnData.filmingLocations.edges.map(
       (e) => e.node.text
     ),
